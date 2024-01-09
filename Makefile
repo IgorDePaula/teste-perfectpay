@@ -50,4 +50,7 @@ docker-artisan: ## Roda o artisan
 	docker exec $(CONTAINER) /bin/bash -c "php artisan $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))"
 
 docker-migrate: ## Executa a migracao do banco
-	docker exec $(CONTAINER_BACK) /bin/bash -c "php artisan migrate --seed"
+	docker exec $(CONTAINER) /bin/bash -c "php artisan migrate --seed"
+
+docker-format: ## Executa a formatacao do codigo
+	docker exec $(CONTAINER) /bin/bash -c "./vendor/bin/pint"
