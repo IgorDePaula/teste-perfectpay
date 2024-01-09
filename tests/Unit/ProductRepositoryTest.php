@@ -9,4 +9,5 @@ it('should return a product collection', function () {
     $productModel->shouldReceive('all')->andReturn([$productModel])->getMock();
     $productRepository = new ProductRepository($productModel);
     expect($productRepository->getAllProducts())->toBeInstanceOf(JsonResource::class);
+    expect($productRepository->getAllProducts())->toHaveCount(1);
 });
