@@ -2,15 +2,34 @@
 
 namespace App\Clients;
 
+use App\Clients\Asaas\ActionInterface;
+use App\Clients\Asaas\Client;
+use GuzzleHttp\Client as GuzzleClient;
+
+/**
+ * @method Client client()
+ */
 class Asaas implements HttpClientInterface
 {
-    private array $url = [
-        'production' => 'https://api.asaas.com/',
-        'sandbox' => 'https://sandbox.asaas.com/api/',
-    ];
-
-    public function getUrl(string $environment)
+    public function __construct(private readonly GuzzleClient $client)
     {
-        return $this->url[$environment];
+
+    }
+
+    public function getClient(): ?GuzzleClient
+    {
+        return $this->client;
+    }
+
+    public function getUrl(string $environment): ?string
+    {
+        return $this->url[$environment] ?? null;
+    }
+
+    public function __call($method, $args): ActionInterface
+    {
+        return match ($method) {
+            'client' => new Client($this)
+        };
     }
 }

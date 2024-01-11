@@ -29,7 +29,7 @@ docker-logs: docker-up ## Visualiza os logs do container
 	docker compose logs --follow
 
 docker-clear: docker-up ## Limpa os caches do laravel
-	docker exec $(CONTAINER) /bin/bash -c "php artisan optimize:clear" && chmod -R 777 storage && chmod -R 777 bootstrap
+	docker exec $(CONTAINER) /bin/bash -c "php artisan optimize:clear" && chmod -R 777 bootstrap
 
 docker-coverage-html: docker-up docker-clear ## Executa os testes com cobertura
 	docker exec -t $(CONTAINER) composer test-coverage-html
