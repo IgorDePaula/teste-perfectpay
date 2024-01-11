@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Repositories\ProductRepository;
+use App\Repositories\Interfaces\ProductRepositoryInterface;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductService
 {
-    public function __construct(private readonly ProductRepository $repository)
+    public function __construct(private readonly ProductRepositoryInterface $repository)
     {
 
     }

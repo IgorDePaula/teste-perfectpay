@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Repositories\Interfaces\ProductRepositoryInterface;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductRepository implements ProductRepositoryInterface

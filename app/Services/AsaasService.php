@@ -2,19 +2,19 @@
 
 namespace App\Services;
 
-use App\Clients\Asaas;
 use App\Dtos\Asaas\Client;
+use App\Repositories\Interfaces\AsaasRepositoryInterface;
 use App\Supports\Result;
 
 class AsaasService
 {
-    public function __construct(private readonly Asaas $client)
+    public function __construct(private readonly AsaasRepositoryInterface $repository)
     {
 
     }
 
-    public function client(Client $client): Result
+    public function newClient(Client $client): Result
     {
-        return $this->client->client()->newClient($client);
+        return $this->repository->newClient($client);
     }
 }

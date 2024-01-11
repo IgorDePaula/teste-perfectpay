@@ -16,7 +16,7 @@ class Client implements ActionInterface
 
     public function newClient(AsaasClient $asaasClient): Result
     {
-        $response = $this->asaas->getClient()->post('/api/v3/customers', $asaasClient->toArray());
+        $response = $this->asaas->getClient()->post('/api/v3/customers', ['form_params' => $asaasClient->toArray()]);
         if ($response->getStatusCode() == 200) {
             return Result::success(AsaasClient::fromArray(json_decode($response->getBody()->getContents(), true)));
         }

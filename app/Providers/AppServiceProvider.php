@@ -3,6 +3,11 @@
 namespace App\Providers;
 
 use App\Clients\Asaas;
+use App\Http\Controllers\ProductController;
+use App\Repositories\AsaasRepository;
+use App\Repositories\Interfaces\AsaasRepositoryInterface;
+use App\Repositories\Interfaces\ProductRepositoryInterface;
+use App\Repositories\ProductRepository;
 use App\Services\AsaasService;
 use GuzzleHttp\Client;
 use Illuminate\Foundation\Application;
@@ -16,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerClients();
+        $this->registerRepositories();
         $this->registerServices();
     }
 
@@ -30,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
     public function registerClients(): void
     {
         $this->app->singleton(Client::class, fn () => new Client([
-            'base_uri' => config('asaas.url')[config('asaas.env','sandbox')],
+            'base_uri' => config('asaas.url')[config('asaas.environment') == 'production' ? 'production' : 'sandbox'],
             'http_errors' => false,
             'headers' => [
                 'access_token' => config('asaas.token'),
@@ -42,10 +48,19 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(Asaas::class, fn (Application $app) => new Asaas($app->make(Client::class)));
     }
 
+    public function registerRepositories(): void
+    {
+        $this->app->singleton(AsaasRepositoryInterface::class, fn (Application $app) => new AsaasRepository($app->make(Asaas::class)));
+    }
+
     public function registerServices(): void
     {
+        $this->app->when(ProductController::class)
+            ->needs(ProductRepositoryInterface::class)
+            ->give(ProductRepository::class);
 
-
-        $this->app->singleton(AsaasService::class, fn (Application $app) => new AsaasService($app->make(Asaas::class)));
+        $this->app->when(AsaasService::class)
+            ->needs(AsaasRepositoryInterface::class)
+            ->give(AsaasRepository::class);
     }
 }

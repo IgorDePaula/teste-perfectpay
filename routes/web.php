@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index']);
-Route::get('/new_client', [\App\Http\Controllers\ClientController::class, 'newClientForm']);
-Route::post('/new_client_request', [\App\Http\Controllers\ClientController::class, 'newClientRequest'])->name('new_client_request');
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/new_client', [ClientController::class, 'newClientForm'])->name('new_client_form');
+Route::post('/new_client_request', [ClientController::class, 'newClientRequest'])->name('new_client_request');
