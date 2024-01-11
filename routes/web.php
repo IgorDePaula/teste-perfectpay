@@ -18,3 +18,5 @@ Route::get('/', function () {
 });
 
 Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index']);
+Route::get('/new_client', [\App\Http\Controllers\ClientController::class, 'newClientForm']);
+Route::post('/new_client_request', [\App\Http\Controllers\ClientController::class, 'newClientRequest'])->name('new_client_request');
