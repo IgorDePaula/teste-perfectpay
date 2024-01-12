@@ -11,5 +11,5 @@ it('should get pix response', function () {
         'expirationDate' => '2022-06-24 23:59:59',
     ];
     $pix = new PixResponse($response);
-    expect($pix->getResult())->toBe($response['encodedImage']);
+    expect($pix->getResult())->toBe("{$response['encodedImage']}@{$response['payload']}");
 });

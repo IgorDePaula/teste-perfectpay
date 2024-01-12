@@ -87,7 +87,7 @@ it('should got payment with pix', function () {
     $paymentRequest = App\Dtos\Asaas\PaymentRequest::fromArray($request);
 
     $pixMock = Mockery::mock(Asaas\Method\Pix::class)
-        ->shouldReceive('pay')->andReturn(Result::success(new Asaas\Method\Responses\PixResponse(['encodedImage' => '123'])))->getMock();
+        ->shouldReceive('pay')->andReturn(Result::success(new Asaas\Method\Responses\PixResponse(['encodedImage' => '123', 'payload' => '456'])))->getMock();
 
     $paymentAction = Mockery::mock(Asaas\Payment::class)
         ->shouldReceive('makePayment')->andReturn($pixMock)->getMock();

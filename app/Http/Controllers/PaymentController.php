@@ -20,7 +20,8 @@ class PaymentController extends Controller
     public function __construct(
         private readonly ProductService $productService,
         private readonly PaymentService $paymentService,
-    ) {
+    )
+    {
 
     }
 
@@ -46,7 +47,7 @@ class PaymentController extends Controller
 
     public function pay(Request $request): RedirectResponse
     {
-        $product = $this->productService->find((int) $request->product);
+        $product = $this->productService->find((int)$request->product);
         $client = $request->session()->get('result_new_client')->getContent();
         $result = $this->paymentService->pay($client, $product, PaymentMethodEnum::tryFrom($request->billingType));
 
@@ -69,7 +70,8 @@ class PaymentController extends Controller
         $redirect = redirect()->route('products');
 
         if ($result->isSuccess() && $result->getContent() instanceof PixResponse) {
-            return redirect()->route('pix')->with('result_payment', $result->getContent()->getResult());
+            [$image, $copy] = explode('@', $result->getContent()->getResult());
+            return redirect()->route('pix')->with('image', $image)->with('copy', $copy);
         }
         if ($result->isSuccess() && $result->getContent() instanceof TicketResponse) {
             return redirect()->route('ticket')->with('result_payment', $result->getContent()->getResult());
@@ -78,6 +80,6 @@ class PaymentController extends Controller
             return redirect()->route('products')->with('result', 'success')->with('content', $result->getContent()->getResult());
         }
 
-        return $redirect->with('result', 'error')->with('content', 'Erro no processamento do pagamento'.$result->getContent()->getMessage());
+        return $redirect->with('result', 'error')->with('content', 'Erro no processamento do pagamento' . $result->getContent()->getMessage());
     }
 }

@@ -38,7 +38,7 @@ it('should create new payment using service', function () {
         ->shouldReceive('requestPayment')->andReturn(Result::success($paymentResponse))->getMock();
 
     $repository->shouldReceive('pay')
-        ->andReturn(Result::success(new PixResponse(['encodedImage' => '123'])));
+        ->andReturn(Result::success(new PixResponse(['encodedImage' => '123', 'payload' => '456'])));
 
     $service = new PaymentService($repository);
     $client = Client::fromArray(['name' => 'test', 'cpfCnpj' => '123', 'id' => '123']);
@@ -86,7 +86,7 @@ it('should pay with pix', function () {
     ];
 
     $repository = Mockery::mock(PaymentRepository::class)
-        ->shouldReceive('pay')->andReturn(Result::success(new PixResponse(['encodedImage' => '123'])))->getMock();
+        ->shouldReceive('pay')->andReturn(Result::success(new PixResponse(['encodedImage' => '123', 'payload' => '456'])))->getMock();
 
     $repository
         ->shouldReceive('requestPayment')->andReturn(Result::success(PaymentResponse::fromArray($response)))->getMock();
@@ -100,7 +100,7 @@ it('should pay with pix', function () {
     $response = $service->pay($client, $productModelMock, PaymentMethodEnum::PIX);
 
     expect($response->isSuccess())->toBeTrue();
-    expect($response->getContent()->getResult())->toBe('123');
+    expect($response->getContent()->getResult())->toBe('123@456');
 
 });
 it('should pay with ticket', function () {

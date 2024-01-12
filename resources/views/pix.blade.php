@@ -5,9 +5,9 @@
 
             <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">QRCode PIX</h2>
         </div>
-        {{session('payment_result')}}
-        {{session('payment_result_error')}}
-        <img width="200" src="data:image/jpeg;base64,{{session('result_payment')}}"/>
+        <img width="200" src="data:image/jpeg;base64,{{session('image')}}"/><br>
+        <p>Codigo copia e cola</p>
+        <p>{{session('copy')}}</p>
 
     </div>
 @endsection
