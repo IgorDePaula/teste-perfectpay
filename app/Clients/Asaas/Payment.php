@@ -3,6 +3,8 @@
 namespace App\Clients\Asaas;
 
 use App\Clients\Asaas;
+use App\Clients\Asaas\Method\AbstractPaymentMethod;
+use App\Clients\Asaas\Method\MethodFactory;
 use App\Dtos\Asaas\PaymentRequest;
 use App\Dtos\Asaas\PaymentResponse;
 use App\Exceptions\AsaasException;
@@ -31,6 +33,12 @@ class Payment implements ActionInterface
         if ($response->getStatusCode() == 401) {
             return Result::failure(new AsaasException('Unauthorized'));
         }
+
         return Result::failure(new AsaasException('Unknow'));
+    }
+
+    public function makePayment(PaymentRequest $request): AbstractPaymentMethod
+    {
+        return MethodFactory::make($request)->setAsaasClient($this->asaas);
     }
 }

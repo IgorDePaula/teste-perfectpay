@@ -1,24 +1,18 @@
 <?php
 
-namespace App\Clients\Asaas;
+namespace App\Clients\Asaas\Method;
 
-use App\Clients\Asaas;
-use App\Dtos\Asaas\Client as AsaasClient;
+use App\Clients\Asaas\Method\Responses\PixResponse;
 use App\Exceptions\AsaasException;
 use App\Supports\Result;
 
-class Client implements ActionInterface
+class Pix extends AbstractPaymentMethod
 {
-    public function __construct(private readonly Asaas $asaas)
+    public function pay(): Result
     {
-
-    }
-
-    public function newClient(AsaasClient $asaasClient): Result
-    {
-        $response = $this->asaas->getClient()->post('/api/v3/customers', ['form_params' => $asaasClient->toArray()]);
+        $response = $this->client->getClient()->post('api/v3/payments/id/pixQrCode', ['form_params' => ['id' => $this->request->id]]);
         if ($response->getStatusCode() == 200) {
-            return Result::success(AsaasClient::fromArray(json_decode($response->getBody()->getContents(), true)));
+            return Result::success(new PixResponse(json_decode($response->getBody()->getContents(), true)));
         }
         if ($response->getStatusCode() == 400) {
             $error = json_decode($response->getBody()->getContents(), true);

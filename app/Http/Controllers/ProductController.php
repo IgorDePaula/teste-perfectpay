@@ -10,9 +10,10 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     public function __construct(
-        private readonly ProductService $service,
+        private readonly ProductService             $service,
         private readonly PaymentRepositoryInterface $repository,
-    ) {
+    )
+    {
 
     }
 
@@ -31,6 +32,8 @@ class ProductController extends Controller
         $customer = $client->id;
         $paymentRequest = PaymentRequest::fromArray(['dueDate' => now()->format('Y-m-d'), 'customer' => $customer, 'value' => $product->price, 'billingType' => $request->billingType]);
         $result = $this->repository->requestPayment($paymentRequest);
+        $paymentRequest = PaymentRequest::fromArray($paymentRequest->toArray() + ['id' => $result->getContent()->id]);
+
         dd($result);
     }
 }

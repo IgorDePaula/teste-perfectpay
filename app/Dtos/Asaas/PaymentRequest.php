@@ -10,7 +10,8 @@ class PaymentRequest extends AbstractDto
         public readonly string $customer,
         public readonly string $billingType,
         public readonly float $value,
-        public readonly string $dueDate
+        public readonly string $dueDate,
+        public readonly ?string $id,
     ) {
 
     }
@@ -21,7 +22,8 @@ class PaymentRequest extends AbstractDto
             customer: $data['customer'],
             billingType: $data['billingType'],
             value: $data['value'],
-            dueDate: $data['dueDate']
+            dueDate: $data['dueDate'],
+            id: $data['id']
         );
     }
 
@@ -32,6 +34,7 @@ class PaymentRequest extends AbstractDto
             'billingType' => $this->billingType,
             'value' => $this->value,
             'dueDate' => $this->dueDate,
+            'id' => $this->id,
         ];
     }
 }
