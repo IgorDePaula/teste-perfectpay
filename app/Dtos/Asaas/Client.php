@@ -2,11 +2,13 @@
 
 namespace App\Dtos\Asaas;
 
-class Client
+use App\Dtos\AbstractDto;
+
+class Client extends AbstractDto
 {
     public function __construct(
-        public readonly string $cpfCnpj,
-        public readonly string $name,
+        public readonly string  $cpfCnpj,
+        public readonly string  $name,
         public readonly ?string $object,
         public readonly ?string $id,
         public readonly ?string $dateCreated,
@@ -21,12 +23,13 @@ class Client
         public readonly ?string $personType,
         public readonly ?string $aditionalEmails,
         public readonly ?string $externalReference,
-        public readonly ?bool $notificationDisabled,
-        public readonly ?int $city,
+        public readonly ?bool   $notificationDisabled,
+        public readonly ?int    $city,
         public readonly ?string $state,
         public readonly ?string $country,
         public readonly ?string $observations,
-    ) {
+    )
+    {
 
     }
 
