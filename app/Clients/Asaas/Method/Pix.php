@@ -10,7 +10,7 @@ class Pix extends AbstractPaymentMethod
 {
     public function pay(): Result
     {
-        $response = $this->client->getClient()->post('api/v3/payments/id/pixQrCode', ['form_params' => ['id' => $this->request->id]]);
+        $response = $this->client->getClient()->post(sprintf('/api/v3/payments/%s/pixQrCode', $this->request->id));
         if ($response->getStatusCode() == 200) {
             return Result::success(new PixResponse(json_decode($response->getBody()->getContents(), true)));
         }
@@ -22,7 +22,7 @@ class Pix extends AbstractPaymentMethod
         if ($response->getStatusCode() == 401) {
             return Result::failure(new AsaasException('Unauthorized'));
         }
-
-        return Result::failure(new AsaasException('Unknow'));
+        dd($this->request, $response->getStatusCode(), $response->getBody());
+        return Result::failure(new AsaasException($response->getBody()->getContents()));
     }
 }

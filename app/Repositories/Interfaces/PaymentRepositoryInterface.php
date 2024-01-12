@@ -8,4 +8,6 @@ use App\Supports\Result;
 interface PaymentRepositoryInterface
 {
     public function requestPayment(PaymentRequest $request): Result;
+
+    public function pay(PaymentRequest $request): Result;
 }

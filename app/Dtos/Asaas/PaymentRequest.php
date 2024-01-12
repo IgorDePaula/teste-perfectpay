@@ -7,12 +7,13 @@ use App\Dtos\AbstractDto;
 class PaymentRequest extends AbstractDto
 {
     public function __construct(
-        public readonly string $customer,
-        public readonly string $billingType,
-        public readonly float $value,
-        public readonly string $dueDate,
+        public readonly string  $customer,
+        public readonly string  $billingType,
+        public readonly float   $value,
+        public readonly string  $dueDate,
         public readonly ?string $id,
-    ) {
+    )
+    {
 
     }
 
@@ -23,7 +24,7 @@ class PaymentRequest extends AbstractDto
             billingType: $data['billingType'],
             value: $data['value'],
             dueDate: $data['dueDate'],
-            id: $data['id']
+            id: $data['id'] ?? null
         );
     }
 

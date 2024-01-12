@@ -12,18 +12,26 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentRepository implements PaymentRepositoryInterface
 {
     public function __construct(
-        private readonly Asaas $client,
-        private readonly Model $model,
+        private readonly Asaas           $client,
+        private readonly Model           $model,
         private readonly MapperInterface $mapper,
-    ) {
+    )
+    {
 
     }
 
     public function requestPayment(PaymentRequest $request): Result
     {
         $result = $this->client->payment()->requestNewPayment($request);
-        //dd($result);
         $this->registerResult($result);
+
+        return $result;
+    }
+
+    public function pay(PaymentRequest $request): Result
+    {
+        $result = $this->client->payment()->makePayment($request)->pay();
+        //$this->registerResult($result);
 
         return $result;
     }
