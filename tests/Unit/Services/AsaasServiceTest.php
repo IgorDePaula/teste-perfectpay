@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Repositories\Interfaces\AsaasRepositoryInterface;
 use App\Services\AsaasService;
 use App\Supports\Result;

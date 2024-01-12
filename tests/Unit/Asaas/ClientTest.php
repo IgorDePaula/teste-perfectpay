@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Clients\Asaas as AsaasClient;
 use App\Dtos\Asaas\Client as DtoClient;
 use App\Supports\Result;

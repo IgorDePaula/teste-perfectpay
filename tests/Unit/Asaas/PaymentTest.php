@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Clients\Asaas as AsaasClient;
 use App\Dtos\Asaas\CardInfo;
 use App\Dtos\Asaas\PaymentRequest;

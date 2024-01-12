@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Supports\AsaasMapper;
 
 it('should transform data from response', function () {

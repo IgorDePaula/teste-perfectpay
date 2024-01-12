@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Clients\Asaas;
 use App\Clients\Asaas\Client;
 use App\Exceptions\AsaasException;

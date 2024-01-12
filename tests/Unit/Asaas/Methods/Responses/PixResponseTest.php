@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Clients\Asaas\Method\Responses\PixResponse;
 
 it('should get pix response', function () {
