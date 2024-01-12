@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Dtos\Asaas\CardInfo;
 use App\Dtos\Asaas\Client;
 use App\Dtos\Asaas\PaymentRequest;
 use App\Enums\PaymentMethodEnum;
@@ -11,6 +12,8 @@ use App\Supports\Result;
 
 class PaymentService
 {
+    private ?CardInfo $cardInfo = null;
+
     public function __construct(private readonly PaymentRepositoryInterface $repository)
     {
 
@@ -24,7 +27,17 @@ class PaymentService
             return $paymentRequested;
         }
         $paymentRequest = PaymentRequest::fromArray([...$paymentRequest->toArray(), 'id' => $paymentRequested->getContent()->id]);
+        if ($this->cardInfo) {
+            return $this->repository->setCardInfo($this->cardInfo)->pay($paymentRequest);
+        }
 
         return $this->repository->pay($paymentRequest);
+    }
+
+    public function setCardInfo(CardInfo $cardInfo): self
+    {
+        $this->cardInfo = $cardInfo;
+
+        return $this;
     }
 }

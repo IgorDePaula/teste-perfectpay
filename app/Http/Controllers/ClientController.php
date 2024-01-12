@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NewClientAsaasRequest;
 use App\Services\AsaasService;
+use App\Supports\Result;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -24,13 +25,17 @@ class ClientController extends Controller
     {
         $result = $this->service->newClient($request->toDto());
         $request->session()->put('result_new_client', $result);
-        $redirect = redirect()->route('products');
-        $result->isSuccess() ?
-            $redirect->with('result', 'success')
-                ->with('content', null) :
-            $redirect->with('result', 'error')
-                ->with('content', $result->getContent()->getMessage());
 
-        return $redirect;
+        return $this->handleResult($result);
+    }
+
+    private function handleResult(Result $result): RedirectResponse
+    {
+        $redirect = redirect()->route('products');
+        if ($result->isSuccess()) {
+            return $redirect->with('result', 'success')->with('content', null);
+        }
+
+        return $redirect->with('result', 'error')->with('content', $result->getContent()->getMessage());
     }
 }

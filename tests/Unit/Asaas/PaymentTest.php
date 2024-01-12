@@ -1,6 +1,7 @@
 <?php
 
 use App\Clients\Asaas as AsaasClient;
+use App\Dtos\Asaas\CardInfo;
 use App\Dtos\Asaas\PaymentRequest;
 use App\Enums\PaymentMethodEnum;
 use App\Enums\PaymentStatusEnum;
@@ -146,4 +147,22 @@ it('should get method payment with ticket', function () {
     $response = $client->payment()->makePayment($request);
 
     expect($response)->toBeInstanceOf(AsaasClient\Method\Ticket::class);
+});
+
+it('should get method payment with creditCard', function () {
+
+    $request = PaymentRequest::fromArray([
+        'customer' => 'dummy_customer',
+        'billingType' => 'CREDIT_CARD',
+        'value' => 12.4,
+        'dueDate' => '2024-05-06',
+    ]);
+    $mockClient = Mockery::mock(GuzzleClient::class);
+
+    $cardInfoMock = Mockery::mock(CardInfo::class)
+        ->shouldReceive('toArray')->andReturn(['creditCard' => [], 'creditCardHolderInfo' => []])->getMock();
+    $client = new AsaasClient($mockClient);
+    $response = $client->payment()->makePayment($request, $cardInfoMock);
+
+    expect($response)->toBeInstanceOf(AsaasClient\Method\CreditCard::class);
 });

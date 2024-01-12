@@ -1,6 +1,7 @@
 <?php
 
 use App\Clients\Asaas;
+use App\Dtos\Asaas\CardInfo;
 use App\Enums\PaymentMethodEnum;
 use App\Enums\PaymentStatusEnum;
 use App\Exceptions\AsaasException;
@@ -51,7 +52,7 @@ it('should create new payment using repository', function () {
 it('should got error with wrong customer', function () {
 
     $request = [
-        'customer' => '',
+        'customer' => 'cus_10923k',
         'billingType' => PaymentMethodEnum::PIX->value,
         'value' => 100,
         'dueDate' => '2024-05-06',
@@ -76,7 +77,7 @@ it('should got error with wrong customer', function () {
 it('should got payment with pix', function () {
 
     $request = [
-        'customer' => '',
+        'customer' => 'cus_10923k',
         'billingType' => PaymentMethodEnum::PIX->value,
         'value' => 100,
         'dueDate' => '2024-05-06',
@@ -105,7 +106,7 @@ it('should got payment with pix', function () {
 it('should got payment with ticket', function () {
 
     $request = [
-        'customer' => '',
+        'customer' => 'cus_10923k',
         'billingType' => PaymentMethodEnum::TICKET->value,
         'value' => 100,
         'dueDate' => '2024-05-06',
@@ -129,4 +130,37 @@ it('should got payment with ticket', function () {
     expect($response->isSuccess())->toBeTrue();
     expect($response->getContent()->getResult())->not->toBeNull();
 
+});
+
+it('should get method payment with creditCard', function () {
+
+    $request = [
+        'customer' => 'cus_10923k',
+        'billingType' => PaymentMethodEnum::CREDIT_CARD->value,
+        'value' => 100,
+        'dueDate' => '2024-05-06',
+    ];
+    $paymentRequest = App\Dtos\Asaas\PaymentRequest::fromArray($request);
+
+    $pixMock = Mockery::mock(Asaas\Method\CreditCard::class)
+        ->shouldReceive('pay')->andReturn(Result::success(new Asaas\Method\Responses\CreditCardResponse(['status' => PaymentStatusEnum::CONFIRMED->name])))->getMock();
+
+    $paymentAction = Mockery::mock(Asaas\Payment::class)
+        ->shouldReceive('makePayment')->andReturn($pixMock)->getMock();
+
+    $client = Mockery::mock(Asaas::class)
+        ->shouldReceive('payment')->andReturn($paymentAction)->getMock();
+
+    $modelMock = Mockery::mock(PaymentResponse::class)
+        ->shouldReceive('create')->andReturn(['id' => 1])->getMock();
+
+    $cardInfoMock = Mockery::mock(CardInfo::class)
+        ->shouldReceive('toArray')->andReturn(['creditCard' => [], 'creditCardHolderInfo' => []])->getMock();
+
+    $repository = new PaymentRepository($client, $modelMock, new AsaasMapper());
+
+    $response = $repository->setCardInfo($cardInfoMock)->pay($paymentRequest);
+
+    expect($response->isSuccess())->toBeTrue();
+    expect($response->getContent()->getResult())->not->toBeNull();
 });

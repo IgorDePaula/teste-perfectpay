@@ -15,7 +15,9 @@ uses(
     Tests\TestCase::class,
     // Illuminate\Foundation\Testing\RefreshDatabase::class,
 )->in('Feature');
-
+arch('globals')
+    ->expect(['dd', 'dump'])
+    ->not->toBeUsed();
 /*
 |--------------------------------------------------------------------------
 | Expectations

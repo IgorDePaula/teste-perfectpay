@@ -5,6 +5,7 @@ namespace App\Clients\Asaas;
 use App\Clients\Asaas;
 use App\Clients\Asaas\Method\AbstractPaymentMethod;
 use App\Clients\Asaas\Method\MethodFactory;
+use App\Dtos\Asaas\CardInfo;
 use App\Dtos\Asaas\PaymentRequest;
 use App\Dtos\Asaas\PaymentResponse;
 use App\Exceptions\AsaasException;
@@ -37,8 +38,8 @@ class Payment implements ActionInterface
         return Result::failure(new AsaasException('Unknow'));
     }
 
-    public function makePayment(PaymentRequest $request): AbstractPaymentMethod
+    public function makePayment(PaymentRequest $request, ?CardInfo $cardInfo = null): AbstractPaymentMethod
     {
-        return MethodFactory::make($request)->setAsaasClient($this->asaas);
+        return MethodFactory::make($request, $cardInfo)->setAsaasClient($this->asaas);
     }
 }

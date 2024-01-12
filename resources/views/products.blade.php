@@ -40,7 +40,7 @@
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$product['price']}}</td>
                             <td>
                                 <a href="{{route('pay')}}?product={{$product['id']}}&billingType=PIX">Pix</a>|
-                                <a href="{{route('pay')}}?product={{$product['id']}}&billingType=CREDIT_CARD">Credit
+                                <a href="{{route('credit-card-form')}}?product={{$product['id']}}">Credit
                                     Card</a>|
                                 <a href="{{route('pay')}}?product={{$product['id']}}&billingType=BOLETO">Ticket</a>
                             </td>

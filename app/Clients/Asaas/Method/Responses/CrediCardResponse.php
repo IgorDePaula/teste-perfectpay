@@ -2,10 +2,10 @@
 
 namespace App\Clients\Asaas\Method\Responses;
 
-class TicketRespose extends AbstractMethodResponse
+class CrediCardResponse extends AbstractMethodResponse
 {
     public function getResult(): string
     {
-        return $this->response['identificationField'];
+        return $this->response['status'];
     }
 }

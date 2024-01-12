@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Clients\Asaas;
+use App\Dtos\Asaas\CardInfo;
 use App\Dtos\Asaas\PaymentRequest;
 use App\Repositories\Interfaces\PaymentRepositoryInterface;
 use App\Supports\Interfaces\MapperInterface;
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaymentRepository implements PaymentRepositoryInterface
 {
+    private ?CardInfo $cardInfo = null;
+
     public function __construct(
         private readonly Asaas $client,
         private readonly Model $model,
@@ -22,23 +25,27 @@ class PaymentRepository implements PaymentRepositoryInterface
     public function requestPayment(PaymentRequest $request): Result
     {
         $result = $this->client->payment()->requestNewPayment($request);
-        $this->registerResult($result);
+        $this->registerRequestPaymentResponse($result);
 
         return $result;
     }
 
     public function pay(PaymentRequest $request): Result
     {
-        $result = $this->client->payment()->makePayment($request)->pay();
-        //$this->registerResult($result);
-
-        return $result;
+        return $this->client->payment()->makePayment($request, $this->cardInfo)->pay();
     }
 
-    private function registerResult(Result $result): void
+    private function registerRequestPaymentResponse(Result $result): void
     {
         if ($result->isSuccess()) {
             $this->model->create($this->mapper->toPersistence($result->getContent()->toArray()));
         }
+    }
+
+    public function setCardInfo(CardInfo $cardInfo): self
+    {
+        $this->cardInfo = $cardInfo;
+
+        return $this;
     }
 }

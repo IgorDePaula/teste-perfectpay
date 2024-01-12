@@ -15,7 +15,6 @@ class Pix extends AbstractPaymentMethod
             return Result::success(new PixResponse(json_decode($response->getBody()->getContents(), true)));
         }
         if ($response->getStatusCode() == 404) {
-
             return Result::failure(new AsaasException('Cobranca nao encontrada'));
         }
         if ($response->getStatusCode() == 401) {
