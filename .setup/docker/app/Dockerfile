@@ -26,7 +26,7 @@ RUN echo "export APACHE_DOCUMENT_ROOT=/var/www/public" >> /etc/apache2/envvars
 RUN sed -ri -e 's/\/var\/www\/html/${APACHE_DOCUMENT_ROOT}/g' /etc/apache2/sites-available/*.conf && \
     sed -ri -e 's/\/var\/www/${APACHE_DOCUMENT_ROOT}/g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
-RUN cp ./docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+#RUN cp docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 RUN sed -ri -e 's/upload_max_filesize = 2M/upload_max_filesize = ${UPLOAD}M/g' /usr/local/etc/php/php.ini
 RUN sed -ri -e 's/memory_limit = 128M/memory_limit = 256M/g' /usr/local/etc/php/php.ini
 RUN sed -ri -e 's/post_max_size = 8M/post_max_size = ${UPLOAD}M/g' /usr/local/etc/php/php.ini
