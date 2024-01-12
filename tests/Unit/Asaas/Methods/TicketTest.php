@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Clients\Asaas;
-use App\Clients\Asaas\Method\Responses\TicketRespose;
+use App\Clients\Asaas\Method\Responses\TicketResponse;
 use App\Clients\Asaas\Method\Ticket;
 use App\Dtos\Asaas\PaymentRequest;
 use GuzzleHttp\Client;
@@ -32,6 +32,6 @@ it('should get identification field ticket', function () {
         ->shouldReceive('getClient')->andReturn($mockClient)->getMock();
     $pix = new Ticket($request);
     $pix->setAsaasClient($clientMock);
-    expect($pix->pay()->getContent())->toBeInstanceOf(TicketRespose::class);
+    expect($pix->pay()->getContent())->toBeInstanceOf(TicketResponse::class);
 
 });

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Clients\Asaas\Method\Responses\TicketResponse;
 use App\Dtos\Asaas\CardInfo;
 use App\Dtos\Asaas\Client;
 use App\Dtos\Asaas\PaymentRequest;
@@ -27,6 +28,9 @@ class PaymentService
         $paymentRequested = $this->repository->requestPayment($paymentRequest);
         if ($paymentRequested->isError()) {
             return $paymentRequested;
+        }
+        if ($paymentMethod == PaymentMethodEnum::TICKET) {
+            return Result::success(new TicketResponse($paymentRequested->getContent()->toArray()));
         }
         $paymentRequest = PaymentRequest::fromArray([...$paymentRequest->toArray(), 'id' => $paymentRequested->getContent()->id]);
         if ($this->cardInfo) {

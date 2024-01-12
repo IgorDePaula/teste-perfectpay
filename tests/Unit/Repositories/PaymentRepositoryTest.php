@@ -116,7 +116,7 @@ it('should got payment with ticket', function () {
     $paymentRequest = App\Dtos\Asaas\PaymentRequest::fromArray($request);
 
     $pixMock = Mockery::mock(Asaas\Method\Pix::class)
-        ->shouldReceive('pay')->andReturn(Result::success(new Asaas\Method\Responses\TicketRespose(['identificationField' => '123'])))->getMock();
+        ->shouldReceive('pay')->andReturn(Result::success(new Asaas\Method\Responses\TicketResponse(['bankSlipUrl' => '123'])))->getMock();
 
     $paymentAction = Mockery::mock(Asaas\Payment::class)
         ->shouldReceive('makePayment')->andReturn($pixMock)->getMock();

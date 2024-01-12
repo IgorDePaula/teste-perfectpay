@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Clients\Asaas\Method;
 
-use App\Clients\Asaas\Method\Responses\TicketRespose;
+use App\Clients\Asaas\Method\Responses\TicketResponse;
 use App\Exceptions\AsaasException;
 use App\Supports\Result;
 
@@ -17,7 +17,7 @@ class Ticket extends AbstractPaymentMethod
             ['form_params' => ['billingType' => $this->request->billingType]]
         );
         if ($response->getStatusCode() == 200) {
-            return Result::success(new TicketRespose(json_decode($response->getBody()->getContents(), true)));
+            return Result::success(new TicketResponse(json_decode($response->getBody()->getContents(), true)));
         }
         if ($response->getStatusCode() == 404) {
 

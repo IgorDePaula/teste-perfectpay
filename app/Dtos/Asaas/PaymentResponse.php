@@ -20,6 +20,7 @@ class PaymentResponse extends AbstractDto
         public readonly string $invoiceUrl,
         public readonly string $invoiceNumber,
         public readonly ?string $externalReference,
+        public readonly ?string $bankSlipUrl,
         public readonly ?string $audit,
     ) {
 
@@ -39,7 +40,8 @@ class PaymentResponse extends AbstractDto
             invoiceUrl: $data['invoiceUrl'],
             invoiceNumber: $data['invoiceNumber'],
             externalReference: $data['externalReference'] ?? null,
-            audit: $data['audit'] ?? null
+            audit: $data['audit'] ?? null,
+            bankSlipUrl: $data['bankSlipUrl'] ?? null,
         );
     }
 
@@ -58,6 +60,7 @@ class PaymentResponse extends AbstractDto
             'invoiceNumber' => $this->invoiceNumber,
             'netValue' => $this->netValue,
             'audit' => $this->audit,
+            'bankSlipUrl' => $this->bankSlipUrl,
         ];
     }
 }

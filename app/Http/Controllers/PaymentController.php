@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Clients\Asaas\Method\Responses\CreditCardResponse;
 use App\Clients\Asaas\Method\Responses\PixResponse;
-use App\Clients\Asaas\Method\Responses\TicketRespose;
+use App\Clients\Asaas\Method\Responses\TicketResponse;
 use App\Enums\PaymentMethodEnum;
 use App\Http\Requests\CreditCardRequest;
 use App\Services\PaymentService;
@@ -46,7 +46,7 @@ class PaymentController extends Controller
 
     public function pay(Request $request): RedirectResponse
     {
-        $product = $this->productService->find($request->product);
+        $product = $this->productService->find((int) $request->product);
         $client = $request->session()->get('result_new_client')->getContent();
         $result = $this->paymentService->pay($client, $product, PaymentMethodEnum::tryFrom($request->billingType));
 
@@ -71,7 +71,7 @@ class PaymentController extends Controller
         if ($result->isSuccess() && $result->getContent() instanceof PixResponse) {
             return redirect()->route('pix')->with('result_payment', $result->getContent()->getResult());
         }
-        if ($result->isSuccess() && $result->getContent() instanceof TicketRespose) {
+        if ($result->isSuccess() && $result->getContent() instanceof TicketResponse) {
             return redirect()->route('ticket')->with('result_payment', $result->getContent()->getResult());
         }
         if ($result->isSuccess() && $result->getContent() instanceof CreditCardResponse) {

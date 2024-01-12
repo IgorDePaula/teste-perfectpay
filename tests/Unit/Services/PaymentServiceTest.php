@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Clients\Asaas;
 use App\Clients\Asaas\Method\Responses\PixResponse;
-use App\Clients\Asaas\Method\Responses\TicketRespose;
+use App\Clients\Asaas\Method\Responses\TicketResponse;
 use App\Dtos\Asaas\CardInfo;
 use App\Dtos\Asaas\Client;
 use App\Dtos\Asaas\PaymentResponse;
@@ -115,12 +115,13 @@ it('should pay with ticket', function () {
         'dueDate' => '2024-05-06',
         'originalDueDate' => '2024-05-06',
         'invoiceUrl' => 'http://localhost/',
+        'bankSlipUrl' => 'http://localhost/',
         'invoiceNumber' => '12345',
         'externalReference' => null,
     ];
 
     $repository = Mockery::mock(PaymentRepository::class)
-        ->shouldReceive('pay')->andReturn(Result::success(new TicketRespose(['identificationField' => '123'])))->getMock();
+        ->shouldReceive('pay')->andReturn(Result::success(new TicketResponse(['bankSlipUrl' => '123'])))->getMock();
 
     $repository
         ->shouldReceive('requestPayment')->andReturn(Result::success(PaymentResponse::fromArray($response)))->getMock();
@@ -134,7 +135,7 @@ it('should pay with ticket', function () {
     $response = $service->pay($client, $productModelMock, PaymentMethodEnum::TICKET);
 
     expect($response->isSuccess())->toBeTrue();
-    expect($response->getContent()->getResult())->toBe('123');
+    expect($response->getContent()->getResult())->toBe('http://localhost/');
 
 });
 

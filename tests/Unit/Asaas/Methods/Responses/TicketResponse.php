@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Clients\Asaas\Method\Responses\TicketRespose;
+use App\Clients\Asaas\Method\Responses\TicketResponse;
 
 it('should get ticket response', function () {
 
@@ -12,7 +12,7 @@ it('should get ticket response', function () {
         'barCode' => '00191878900000050000000002759288002193297817',
     ];
 
-    $ticketResponse = new TicketRespose($response);
+    $ticketResponse = new TicketResponse($response);
 
     expect($ticketResponse->getResult())->toBeString()->not->toBeNull();
     expect($ticketResponse->getResult())->toBe($response['identificationField']);
