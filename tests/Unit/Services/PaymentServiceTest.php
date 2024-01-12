@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Enums\PaymentStatusEnum;
 use App\Enums\PaymentTypeEnum;
 use App\Exceptions\AsaasException;
@@ -34,7 +33,6 @@ it('should create new payment using service', function () {
 
     $repository = Mockery::mock(PaymentRepository::class)
         ->shouldReceive('requestPayment')->andReturn(Result::success($paymentResponse))->getMock();
-
 
     $service = new PaymentService($repository);
     $response = $service->pay($paymentRequest);
@@ -70,7 +68,6 @@ it('should got error with wrong customer', function () {
 
     $repository = Mockery::mock(PaymentRepository::class)
         ->shouldReceive('requestPayment')->andReturn(Result::failure(new AsaasException('Customer inválido ou não informado.')))->getMock();
-
 
     $service = new PaymentService($repository);
     $response = $service->pay($paymentRequest);

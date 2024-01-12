@@ -1,12 +1,12 @@
 <?php
 
-
 use App\Clients\Asaas;
 use App\Enums\PaymentStatusEnum;
 use App\Enums\PaymentTypeEnum;
 use App\Exceptions\AsaasException;
 use App\Models\PaymentResponse;
 use App\Repositories\PaymentRepository;
+use App\Supports\AsaasMapper;
 use App\Supports\Result;
 
 it('should create new payment using repository', function () {
@@ -40,7 +40,7 @@ it('should create new payment using repository', function () {
     $modelMock = Mockery::mock(PaymentResponse::class)
         ->shouldReceive('create')->andReturn(['id' => 1])->getMock();
 
-    $repository = new PaymentRepository($client, $modelMock);
+    $repository = new PaymentRepository($client, $modelMock, new AsaasMapper());
     $response = $repository->requestPayment($paymentRequest);
 
     expect($response->isSuccess())->toBeTrue();
@@ -65,7 +65,7 @@ it('should got error with wrong customer', function () {
     $modelMock = Mockery::mock(PaymentResponse::class)
         ->shouldReceive('create')->andReturn(['id' => 1])->getMock();
 
-    $repository = new PaymentRepository($client, $modelMock);
+    $repository = new PaymentRepository($client, $modelMock, new AsaasMapper());
     $response = $repository->requestPayment($paymentRequest);
 
     expect($response->isError())->toBeTrue();

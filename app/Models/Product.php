@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use NumberFormatter;
 
 class Product extends Model
 {
@@ -12,8 +11,7 @@ class Product extends Model
 
     protected $fillable = ['name', 'description', 'price'];
 
-    public function getPriceAttribute(): string
-    {
-        return NumberFormatter::create('pt_BR', NumberFormatter::CURRENCY)->format($this->attributes['price']);
-    }
+    protected $casts = [
+        'price' => 'float',
+    ];
 }

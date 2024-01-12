@@ -3,17 +3,15 @@
 namespace App\Dtos\Asaas;
 
 use App\Dtos\AbstractDto;
-use DateTimeInterface;
 
 class PaymentRequest extends AbstractDto
 {
     public function __construct(
         public readonly string $customer,
         public readonly string $billingType,
-        public readonly float  $value,
+        public readonly float $value,
         public readonly string $dueDate
-    )
-    {
+    ) {
 
     }
 
@@ -33,7 +31,7 @@ class PaymentRequest extends AbstractDto
             'customer' => $this->customer,
             'billingType' => $this->billingType,
             'value' => $this->value,
-            'dueDate' => $this->dueDate->format('Y-m-d')
+            'dueDate' => $this->dueDate,
         ];
     }
 }

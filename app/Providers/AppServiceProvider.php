@@ -4,11 +4,17 @@ namespace App\Providers;
 
 use App\Clients\Asaas;
 use App\Http\Controllers\ProductController;
+use App\Models\PaymentResponse;
 use App\Repositories\AsaasRepository;
 use App\Repositories\Interfaces\AsaasRepositoryInterface;
+use App\Repositories\Interfaces\PaymentRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
+use App\Repositories\PaymentRepository;
 use App\Repositories\ProductRepository;
 use App\Services\AsaasService;
+use App\Services\PaymentService;
+use App\Services\ProductService;
+use App\Supports\AsaasMapper;
 use GuzzleHttp\Client;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -51,16 +57,25 @@ class AppServiceProvider extends ServiceProvider
     public function registerRepositories(): void
     {
         $this->app->singleton(AsaasRepositoryInterface::class, fn (Application $app) => new AsaasRepository($app->make(Asaas::class)));
+        $this->app->singleton(PaymentRepositoryInterface::class, fn (Application $app) => new PaymentRepository($app->make(Asaas::class), new PaymentResponse(), new AsaasMapper()));
     }
 
     public function registerServices(): void
     {
         $this->app->when(ProductController::class)
-            ->needs(ProductRepositoryInterface::class)
-            ->give(ProductRepository::class);
+            ->needs(ProductService::class)
+            ->give(ProductService::class);
 
         $this->app->when(AsaasService::class)
             ->needs(AsaasRepositoryInterface::class)
             ->give(AsaasRepository::class);
+
+        $this->app->when(PaymentService::class)
+            ->needs(PaymentRepositoryInterface::class)
+            ->give(PaymentRepository::class);
+
+        $this->app->when(ProductService::class)
+            ->needs(ProductRepositoryInterface::class)
+            ->give(ProductRepository::class);
     }
 }

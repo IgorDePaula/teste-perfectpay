@@ -28,7 +28,7 @@ class PaymentResponse extends Model
         'invoice_url',
         'invoice_number',
         'external_reference',
-        'audit_log'
+        'audit_log',
     ];
 
     public function pay()

@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductRepository implements ProductRepositoryInterface
@@ -17,5 +18,10 @@ class ProductRepository implements ProductRepositoryInterface
     public function getAllProducts(): JsonResource
     {
         return ProductResource::collection($this->product->all());
+    }
+
+    public function find(int $id): Model
+    {
+        return $this->product->find($id);
     }
 }

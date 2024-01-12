@@ -5,10 +5,8 @@
 
             <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Novo cliente</h2>
         </div>
-        @php(print_r(session('result_new_client')->getContent()->id))
-        <x-alert
-                :type="session('result')"
-                :content="session('content')"/>
+
+
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
             <form class="space-y-6" action="{{route('new_client_request')}}" method="POST">
                 @csrf

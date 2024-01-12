@@ -6,21 +6,20 @@ use App\Dtos\AbstractDto;
 
 class PaymentResponse extends AbstractDto
 {
-
     public function __construct(
-        public readonly string  $id,
-        public readonly string  $customer,
-        public readonly float   $value,
-        public readonly float   $netValue,
-        public readonly string  $billintType,
-        public readonly string  $status,
-        public readonly string  $dueDate,
-        public readonly string  $originalDueDate,
-        public readonly string  $invoiceUrl,
-        public readonly string  $invoiceNumber,
+        public readonly string $id,
+        public readonly string $customer,
+        public readonly float $value,
+        public readonly float $netValue,
+        public readonly string $billintType,
+        public readonly string $status,
+        public readonly string $dueDate,
+        public readonly string $originalDueDate,
+        public readonly string $invoiceUrl,
+        public readonly string $invoiceNumber,
         public readonly ?string $externalReference,
-    )
-    {
+        public readonly ?string $audit,
+    ) {
 
     }
 
@@ -37,7 +36,8 @@ class PaymentResponse extends AbstractDto
             originalDueDate: $data['originalDueDate'],
             invoiceUrl: $data['invoiceUrl'],
             invoiceNumber: $data['invoiceNumber'],
-            externalReference: $data['externalReference'] ?? null
+            externalReference: $data['externalReference'] ?? null,
+            audit: $data['audit'] ?? null
         );
     }
 
@@ -54,7 +54,8 @@ class PaymentResponse extends AbstractDto
             'billingType' => $this->billintType,
             'invoiceUrl' => $this->invoiceUrl,
             'invoiceNumber' => $this->invoiceNumber,
-            'netValue' => $this->netValue
+            'netValue' => $this->netValue,
+            'audit' => $this->audit,
         ];
     }
 }

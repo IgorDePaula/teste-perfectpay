@@ -19,7 +19,9 @@ class Payment implements ActionInterface
     {
         $response = $this->asaas->getClient()->post('/api/v3/payments', ['form_params' => $request->toArray()]);
         if ($response->getStatusCode() == 200) {
-            return Result::success(PaymentResponse::fromArray(json_decode($response->getBody()->getContents(), true)));
+            $audit = $response->getBody()->getContents();
+
+            return Result::success(PaymentResponse::fromArray(json_decode($audit, true) + ['audit' => $audit]));
         }
         if ($response->getStatusCode() == 400) {
             $error = json_decode($response->getBody()->getContents(), true);
@@ -29,5 +31,6 @@ class Payment implements ActionInterface
         if ($response->getStatusCode() == 401) {
             return Result::failure(new AsaasException('Unauthorized'));
         }
+        return Result::failure(new AsaasException('Unknow'));
     }
 }

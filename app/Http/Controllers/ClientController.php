@@ -6,7 +6,6 @@ use App\Http\Requests\NewClientAsaasRequest;
 use App\Services\AsaasService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
 class ClientController extends Controller
@@ -24,8 +23,8 @@ class ClientController extends Controller
     public function newClientRequest(NewClientAsaasRequest $request): RedirectResponse
     {
         $result = $this->service->newClient($request->toDto());
-        Session::put('result_new_client', $result);
-        $redirect = redirect()->route('new_client_form');
+        $request->session()->put('result_new_client', $result);
+        $redirect = redirect()->route('products');
         $result->isSuccess() ?
             $redirect->with('result', 'success')
                 ->with('content', null) :
