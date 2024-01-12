@@ -18,7 +18,7 @@ class PaymentService
 
     public function pay(Client $client, Product $product, PaymentMethodEnum $paymentMethod): Result
     {
-        $paymentRequest = PaymentRequest::fromArray(['dueDate' => now()->format('Y-m-d'), 'customer' => $client->id, 'value' => $product->price, 'billingType' => $paymentMethod->name]);
+        $paymentRequest = PaymentRequest::fromArray(['dueDate' => now()->format('Y-m-d'), 'customer' => $client->id, 'value' => $product->price, 'billingType' => $paymentMethod->value]);
         $paymentRequested = $this->repository->requestPayment($paymentRequest);
         if ($paymentRequested->isError()) {
             return $paymentRequested;

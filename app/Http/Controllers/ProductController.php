@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Clients\Asaas\Method\Responses\PixResponse;
+use App\Clients\Asaas\Method\Responses\TicketRespose;
 use App\Enums\PaymentMethodEnum;
 use App\Services\PaymentService;
 use App\Services\ProductService;
@@ -42,7 +43,11 @@ class ProductController extends Controller
         if ($result->isSuccess() && $result->getContent() instanceof PixResponse) {
             return redirect()->route('pix')->with('result_payment', $result->getContent()->getResult());
         }
+        if ($result->isSuccess() && $result->getContent() instanceof TicketRespose) {
+            return redirect()->route('ticket')->with('result_payment', $result->getContent()->getResult());
+        }
+        dd($result);
 
-        return redirect()->route('pix')->with('result_payment', 'Erro no processamento do pagamento');
+        return redirect()->route('pix')->with('result_payment_error', 'Erro no processamento do pagamento'.$result->getContent()->getMessage());
     }
 }

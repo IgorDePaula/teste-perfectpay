@@ -116,7 +116,7 @@ it('should get error on wrong customer', function () {
 
 });
 
-it('should get method payment', function () {
+it('should get method payment with pix', function () {
 
     $request = PaymentRequest::fromArray([
         'customer' => 'dummy_customer',
@@ -130,4 +130,20 @@ it('should get method payment', function () {
     $response = $client->payment()->makePayment($request);
 
     expect($response)->toBeInstanceOf(AsaasClient\Method\Pix::class);
+});
+
+it('should get method payment with ticket', function () {
+
+    $request = PaymentRequest::fromArray([
+        'customer' => 'dummy_customer',
+        'billingType' => 'BOLETO',
+        'value' => 12.4,
+        'dueDate' => '2024-05-06',
+    ]);
+    $mockClient = Mockery::mock(GuzzleClient::class);
+
+    $client = new AsaasClient($mockClient);
+    $response = $client->payment()->makePayment($request);
+
+    expect($response)->toBeInstanceOf(AsaasClient\Method\Ticket::class);
 });

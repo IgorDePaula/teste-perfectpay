@@ -25,3 +25,5 @@ Route::get('/pay', [ProductController::class, 'pay'])->name('pay')->middleware('
 Route::get('/new_client', [ClientController::class, 'newClientForm'])->name('new_client_form');
 Route::post('/new_client_request', [ClientController::class, 'newClientRequest'])->name('new_client_request');
 Route::get('/pix', [PaymentController::class, 'pix'])->name('pix');
+Route::get('/ticket', [PaymentController::class, 'ticket'])->name('ticket');
+Route::get('/credi-card-result', [PaymentController::class, 'creditCard'])->name('credi-card-result');

@@ -72,3 +72,61 @@ it('should got error with wrong customer', function () {
     expect($response->getContent()->getMessage())->toBe('Customer inválido ou não informado.');
 
 });
+
+it('should got payment with pix', function () {
+
+    $request = [
+        'customer' => '',
+        'billingType' => PaymentMethodEnum::PIX->value,
+        'value' => 100,
+        'dueDate' => '2024-05-06',
+    ];
+    $paymentRequest = App\Dtos\Asaas\PaymentRequest::fromArray($request);
+
+    $pixMock = Mockery::mock(Asaas\Method\Pix::class)
+        ->shouldReceive('pay')->andReturn(Result::success(new Asaas\Method\Responses\PixResponse(['encodedImage' => '123'])))->getMock();
+
+    $paymentAction = Mockery::mock(Asaas\Payment::class)
+        ->shouldReceive('makePayment')->andReturn($pixMock)->getMock();
+
+    $client = Mockery::mock(Asaas::class)
+        ->shouldReceive('payment')->andReturn($paymentAction)->getMock();
+    $modelMock = Mockery::mock(PaymentResponse::class)
+        ->shouldReceive('create')->andReturn(['id' => 1])->getMock();
+
+    $repository = new PaymentRepository($client, $modelMock, new AsaasMapper());
+    $response = $repository->pay($paymentRequest);
+
+    expect($response->isSuccess())->toBeTrue();
+    expect($response->getContent()->getResult())->not->toBeNull();
+
+});
+
+it('should got payment with ticket', function () {
+
+    $request = [
+        'customer' => '',
+        'billingType' => PaymentMethodEnum::TICKET->value,
+        'value' => 100,
+        'dueDate' => '2024-05-06',
+    ];
+    $paymentRequest = App\Dtos\Asaas\PaymentRequest::fromArray($request);
+
+    $pixMock = Mockery::mock(Asaas\Method\Pix::class)
+        ->shouldReceive('pay')->andReturn(Result::success(new Asaas\Method\Responses\TicketRespose(['identificationField' => '123'])))->getMock();
+
+    $paymentAction = Mockery::mock(Asaas\Payment::class)
+        ->shouldReceive('makePayment')->andReturn($pixMock)->getMock();
+
+    $client = Mockery::mock(Asaas::class)
+        ->shouldReceive('payment')->andReturn($paymentAction)->getMock();
+    $modelMock = Mockery::mock(PaymentResponse::class)
+        ->shouldReceive('create')->andReturn(['id' => 1])->getMock();
+
+    $repository = new PaymentRepository($client, $modelMock, new AsaasMapper());
+    $response = $repository->pay($paymentRequest);
+
+    expect($response->isSuccess())->toBeTrue();
+    expect($response->getContent()->getResult())->not->toBeNull();
+
+});

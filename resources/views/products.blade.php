@@ -42,7 +42,7 @@
                                 <a href="{{route('pay')}}?product={{$product['id']}}&billingType=PIX">Pix</a>|
                                 <a href="{{route('pay')}}?product={{$product['id']}}&billingType=CREDIT_CARD">Credit
                                     Card</a>|
-                                <a href="{{route('pay')}}?product={{$product['id']}}&billingType=TICKET">Ticket</a>
+                                <a href="{{route('pay')}}?product={{$product['id']}}&billingType=BOLETO">Ticket</a>
                             </td>
                         </tr>
 

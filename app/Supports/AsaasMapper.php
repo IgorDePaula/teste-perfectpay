@@ -2,6 +2,7 @@
 
 namespace App\Supports;
 
+use App\Enums\PaymentMethodEnum;
 use App\Supports\Interfaces\MapperInterface;
 
 class AsaasMapper implements MapperInterface
@@ -19,5 +20,14 @@ class AsaasMapper implements MapperInterface
             'invoice_number' => $data['invoiceNumber'],
             'audit_log' => $data['audit'],
         ];
+    }
+
+    public function translateBillingType(string $billingType): string
+    {
+        return match ($billingType) {
+            PaymentMethodEnum::PIX->value => 'PIX',
+            PaymentMethodEnum::TICKET->value => 'BOLETO',
+            PaymentMethodEnum::CREDIT_CARD->value => 'CREDIT_CARD'
+        };
     }
 }
