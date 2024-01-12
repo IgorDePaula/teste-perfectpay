@@ -4,10 +4,13 @@ namespace App\Clients;
 
 use App\Clients\Asaas\ActionInterface;
 use App\Clients\Asaas\Client;
+use App\Clients\Asaas\Payment;
+use App\Dtos\Asaas\PaymentRequest;
 use GuzzleHttp\Client as GuzzleClient;
 
 /**
- * @method Client client()
+ * @method Client client(Client $client)
+ * @method Payment payment()
  */
 class Asaas implements HttpClientInterface
 {
@@ -29,7 +32,8 @@ class Asaas implements HttpClientInterface
     public function __call($method, $args): ActionInterface
     {
         return match ($method) {
-            'client' => new Client($this)
+            'client' => new Client($this),
+            'payment' => new Payment($this),
         };
     }
 }
