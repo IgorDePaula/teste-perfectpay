@@ -2,8 +2,8 @@
 
 use App\Clients\Asaas as AsaasClient;
 use App\Dtos\Asaas\PaymentRequest;
+use App\Enums\PaymentMethodEnum;
 use App\Enums\PaymentStatusEnum;
-use App\Enums\PaymentTypeEnum;
 use App\Supports\Result;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Response;
@@ -15,7 +15,7 @@ it('should create a Asaas payment to api', function () {
         'customer' => 'cus_10923k',
         'value' => 100,
         'netValue' => 91.04,
-        'billingType' => PaymentTypeEnum::PIX->value,
+        'billingType' => PaymentMethodEnum::PIX->value,
         'status' => PaymentStatusEnum::PENDING->value,
         'dueDate' => '2024-05-06',
         'originalDueDate' => '2024-05-06',
@@ -26,7 +26,7 @@ it('should create a Asaas payment to api', function () {
 
     $request = [
         'customer' => 'cus_10923k',
-        'billingType' => PaymentTypeEnum::PIX->value,
+        'billingType' => PaymentMethodEnum::PIX->value,
         'value' => 100,
         'dueDate' => '2024-05-06',
     ];
@@ -58,7 +58,7 @@ it('should get error on wrong token', function () {
 
     $request = [
         'customer' => 'cus_10923k',
-        'billingType' => PaymentTypeEnum::PIX->value,
+        'billingType' => PaymentMethodEnum::PIX->value,
         'value' => 100,
         'dueDate' => '2024-05-06',
     ];
@@ -92,7 +92,7 @@ it('should get error on wrong customer', function () {
     ];
     $request = [
         'customer' => 'cus_10923k',
-        'billingType' => PaymentTypeEnum::PIX->value,
+        'billingType' => PaymentMethodEnum::PIX->value,
         'value' => 100,
         'dueDate' => '2024-05-06',
     ];
@@ -120,7 +120,7 @@ it('should get method payment', function () {
 
     $request = PaymentRequest::fromArray([
         'customer' => 'dummy_customer',
-        'billingType' => 'pix',
+        'billingType' => 'PIX',
         'value' => 12.4,
         'dueDate' => '2024-05-06',
     ]);

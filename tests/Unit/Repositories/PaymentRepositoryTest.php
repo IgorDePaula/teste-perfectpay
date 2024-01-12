@@ -1,8 +1,8 @@
 <?php
 
 use App\Clients\Asaas;
+use App\Enums\PaymentMethodEnum;
 use App\Enums\PaymentStatusEnum;
-use App\Enums\PaymentTypeEnum;
 use App\Exceptions\AsaasException;
 use App\Models\PaymentResponse;
 use App\Repositories\PaymentRepository;
@@ -15,7 +15,7 @@ it('should create new payment using repository', function () {
         'customer' => 'cus_10923k',
         'value' => 100,
         'netValue' => 91.04,
-        'billingType' => PaymentTypeEnum::PIX->value,
+        'billingType' => PaymentMethodEnum::PIX->value,
         'status' => PaymentStatusEnum::PENDING->value,
         'dueDate' => '2024-05-06',
         'originalDueDate' => '2024-05-06',
@@ -26,7 +26,7 @@ it('should create new payment using repository', function () {
 
     $request = [
         'customer' => 'cus_10923k',
-        'billingType' => PaymentTypeEnum::PIX->value,
+        'billingType' => PaymentMethodEnum::PIX->value,
         'value' => 100,
         'dueDate' => '2024-05-06',
     ];
@@ -52,7 +52,7 @@ it('should got error with wrong customer', function () {
 
     $request = [
         'customer' => '',
-        'billingType' => PaymentTypeEnum::PIX->value,
+        'billingType' => PaymentMethodEnum::PIX->value,
         'value' => 100,
         'dueDate' => '2024-05-06',
     ];

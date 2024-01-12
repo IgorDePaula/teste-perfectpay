@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentMethodEnum;
 use App\Enums\PaymentStatusEnum;
-use App\Enums\PaymentTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,7 +13,7 @@ class PaymentResponse extends Model
 
     protected $casts = [
         'status' => PaymentStatusEnum::class,
-        'billing_type' => PaymentTypeEnum::class,
+        'billing_type' => PaymentMethodEnum::class,
     ];
 
     protected $fillable = [

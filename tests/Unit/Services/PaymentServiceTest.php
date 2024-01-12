@@ -1,8 +1,11 @@
 <?php
 
+use App\Clients\Asaas\Method\Responses\PixResponse;
+use App\Dtos\Asaas\Client;
+use App\Enums\PaymentMethodEnum;
 use App\Enums\PaymentStatusEnum;
-use App\Enums\PaymentTypeEnum;
 use App\Exceptions\AsaasException;
+use App\Models\Product;
 use App\Repositories\PaymentRepository;
 use App\Services\PaymentService;
 use App\Supports\Result;
@@ -13,7 +16,7 @@ it('should create new payment using service', function () {
         'customer' => 'cus_10923k',
         'value' => 100,
         'netValue' => 91.04,
-        'billingType' => PaymentTypeEnum::PIX->value,
+        'billingType' => PaymentMethodEnum::PIX->value,
         'status' => PaymentStatusEnum::PENDING->value,
         'dueDate' => '2024-05-06',
         'originalDueDate' => '2024-05-06',
@@ -24,7 +27,7 @@ it('should create new payment using service', function () {
 
     $request = [
         'customer' => 'cus_10923k',
-        'billingType' => PaymentTypeEnum::PIX->value,
+        'billingType' => PaymentMethodEnum::PIX->value,
         'value' => 100,
         'dueDate' => '2024-05-06',
     ];
@@ -34,11 +37,17 @@ it('should create new payment using service', function () {
     $repository = Mockery::mock(PaymentRepository::class)
         ->shouldReceive('requestPayment')->andReturn(Result::success($paymentResponse))->getMock();
 
-    $service = new PaymentService($repository);
-    $response = $service->pay($paymentRequest);
+    $repository->shouldReceive('pay')
+        ->andReturn(Result::success(new PixResponse(['encodedImage' => '123'])));
 
+    $service = new PaymentService($repository);
+    $client = Client::fromArray(['name' => 'test', 'cpfCnpj' => '123', 'id' => '123']);
+    $productModelMock = Mockery::mock(Product::class)->shouldReceive('getAttribute')
+        ->with('price')->andReturn(23.4)->getMock();
+
+    $response = $service->pay($client, $productModelMock, PaymentMethodEnum::PIX);
     expect($response->isSuccess())->toBeTrue();
-    expect($response->getContent()->id)->not->toBeNull();
+    expect($response->getContent()->getResult())->toBeString()->not->toBeNull();
 
 });
 
@@ -49,7 +58,7 @@ it('should got error with wrong customer', function () {
         'customer' => 'cus_10923k',
         'value' => 100,
         'netValue' => 91.04,
-        'billingType' => PaymentTypeEnum::PIX->value,
+        'billingType' => PaymentMethodEnum::PIX->value,
         'status' => PaymentStatusEnum::PENDING->value,
         'dueDate' => '2024-05-06',
         'originalDueDate' => '2024-05-06',
@@ -60,7 +69,7 @@ it('should got error with wrong customer', function () {
 
     $request = [
         'customer' => '',
-        'billingType' => PaymentTypeEnum::PIX->value,
+        'billingType' => PaymentMethodEnum::PIX->value,
         'value' => 100,
         'dueDate' => '2024-05-06',
     ];
@@ -70,7 +79,12 @@ it('should got error with wrong customer', function () {
         ->shouldReceive('requestPayment')->andReturn(Result::failure(new AsaasException('Customer inválido ou não informado.')))->getMock();
 
     $service = new PaymentService($repository);
-    $response = $service->pay($paymentRequest);
+
+    $client = Client::fromArray(['name' => 'test', 'cpfCnpj' => '123', 'id' => '123']);
+    $productModelMock = Mockery::mock(Product::class)->shouldReceive('getAttribute')
+        ->with('price')->andReturn(23.4)->getMock();
+
+    $response = $service->pay($client, $productModelMock, PaymentMethodEnum::PIX);
 
     expect($response->isError())->toBeTrue();
     expect($response->getContent()->getMessage())->toBe('Customer inválido ou não informado.');

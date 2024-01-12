@@ -12,11 +12,10 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentRepository implements PaymentRepositoryInterface
 {
     public function __construct(
-        private readonly Asaas           $client,
-        private readonly Model           $model,
+        private readonly Asaas $client,
+        private readonly Model $model,
         private readonly MapperInterface $mapper,
-    )
-    {
+    ) {
 
     }
 

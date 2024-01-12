@@ -39,10 +39,10 @@
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$product['description']}}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$product['price']}}</td>
                             <td>
-                                <a href="{{route('pay')}}?product={{$product['id']}}&billingType=pix">Pix</a>|
-                                <a href="{{route('pay')}}?product={{$product['id']}}&billingType=credit_card">Credit
+                                <a href="{{route('pay')}}?product={{$product['id']}}&billingType=PIX">Pix</a>|
+                                <a href="{{route('pay')}}?product={{$product['id']}}&billingType=CREDIT_CARD">Credit
                                     Card</a>|
-                                <a href="{{route('pay')}}?product={{$product['id']}}&billingType=ticket">Ticket</a>
+                                <a href="{{route('pay')}}?product={{$product['id']}}&billingType=TICKET">Ticket</a>
                             </td>
                         </tr>
 

@@ -11,7 +11,7 @@ it('should transform data from response', function () {
         'originalDueDate' => 'dummy_original_due_date',
         'invoiceUrl' => 'dummy_invoice_url',
         'invoiceNumber' => 'dummy_invoice_number',
-        'audit' => json_encode(['name' => 'test'])
+        'audit' => json_encode(['name' => 'test']),
     ];
 
     $mapper = new AsaasMapper();

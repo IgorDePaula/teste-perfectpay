@@ -22,7 +22,7 @@ class Pix extends AbstractPaymentMethod
         if ($response->getStatusCode() == 401) {
             return Result::failure(new AsaasException('Unauthorized'));
         }
-        dd($this->request, $response->getStatusCode(), $response->getBody());
+
         return Result::failure(new AsaasException($response->getBody()->getContents()));
     }
 }
