@@ -5,7 +5,6 @@ namespace App\Clients;
 use App\Clients\Asaas\ActionInterface;
 use App\Clients\Asaas\Client;
 use App\Clients\Asaas\Payment;
-use App\Dtos\Asaas\PaymentRequest;
 use GuzzleHttp\Client as GuzzleClient;
 
 /**

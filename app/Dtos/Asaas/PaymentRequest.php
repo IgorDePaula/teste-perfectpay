@@ -8,10 +8,10 @@ use DateTimeInterface;
 class PaymentRequest extends AbstractDto
 {
     public function __construct(
-        public readonly string            $customer,
-        public readonly string            $billingType,
-        public readonly float             $value,
-        public readonly DateTimeInterface $dueDate
+        public readonly string $customer,
+        public readonly string $billingType,
+        public readonly float  $value,
+        public readonly string $dueDate
     )
     {
 
